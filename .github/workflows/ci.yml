@@ -319,7 +319,7 @@ jobs:
   # ═══════════════════════════════════════════════════════════════
   gate:
     name: "CI Gate"
-    needs: [structure, contracts, capabilities, branch-name, secrets-scan]
+    needs: [structure, contracts, capabilities, secrets-scan]
     runs-on: ubuntu-latest
     steps:
       - name: All checks passed
