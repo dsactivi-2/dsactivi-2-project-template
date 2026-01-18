@@ -1,68 +1,65 @@
 # Codex CLI Regeln für dieses Projekt
 
-> Diese Regeln gelten für OpenAI Codex CLI und alle AI Agents die in diesem Repo arbeiten.
-
 ---
 
-## Projekt-Kontext
+## PFLICHT BEI SESSION-START
 
-Dieses Projekt verwendet das **Activi-AI Template**. Alle Regeln aus `CLAUDE.md` gelten auch hier.
+**STOPP! Bevor du IRGENDETWAS tust, lies diese Dateien:**
 
----
-
-## Pflicht-Dateien (NICHT löschen)
-
-```
-README.md
-PROJECT_STATE.md
-MASTER_RUNBOOK.md
-PRODUCTION_CHECKLIST.md
-capabilities.yml
-CONTRACTS/api_contract.md
-CONTRACTS/data_contract.md
-ops/POLICY.md
+```bash
+cat ops/POLICY.md
+cat MASTER_RUNBOOK.md
+cat capabilities.yml
+cat PRODUCTION_CHECKLIST.md
+cat CONTRACTS/api_contract.md
+cat CONTRACTS/data_contract.md
 ```
 
----
-
-## Vor jeder Änderung
-
-1. **Lies zuerst:**
-   - `PROJECT_STATE.md` - aktueller Status
-   - `CONTRACTS/*.md` - API/DB Definitionen
-
-2. **Bei API-Änderungen:**
-   - Contract ZUERST aktualisieren
-   - Dann Code ändern
-
-3. **Bei neuen Features:**
-   - In `capabilities.yml` registrieren
-   - Tests hinzufügen
+**Erst nach dem Lesen darfst du arbeiten!**
 
 ---
 
-## Workflow
+## Warum?
 
-```
-INTAKE_PROMPT.md → MASTER_PROMPT_1.md → MASTER_PROMPT_2.md
-     ↓                    ↓                    ↓
-  Anfrage            Ziel-Plan            Step-by-Step
-  verstehen          erstellen            ausführen
-```
-
----
-
-## Tests sind PFLICHT
-
-- Jede Funktion braucht Tests
-- Test-Regeln in `capabilities.yml`
-- Vor Commit: Tests ausführen
+| Datei | Enthält |
+|-------|---------|
+| `ops/POLICY.md` | Merge-Regeln, Branch-Namen, Push-Rules, Versioning |
+| `MASTER_RUNBOOK.md` | Step 0-10 Workflow, STOPP-Punkte |
+| `capabilities.yml` | Test-Pflichten pro Feature |
+| `PRODUCTION_CHECKLIST.md` | Alle Go-Live Checks |
+| `CONTRACTS/*.md` | API + DB Definitionen |
 
 ---
 
-## Verboten
+## Kurzregeln
 
-- Pflicht-Dateien löschen
-- Contracts ohne Dokumentation ändern
-- Code ohne Tests
-- Production ohne Checklist
+### Contracts-First
+- API/DB Änderung → ZUERST Contract aktualisieren → DANN Code
+
+### Branch-Namen
+- Features: `feature/beschreibung`
+- Fixes: `fix/beschreibung`
+- Hotfixes: `hotfix/beschreibung`
+
+### Merge-Strategie
+- feature → develop: **Squash**
+- develop → main: **Merge Commit**
+
+### Tests
+- Jede Funktion → in `capabilities.yml` registrieren
+- Keine Funktion ohne Test
+
+### STOPP-Punkte
+- Nach Step 7 → `docs/CONTRACT_VERIFICATION.md` prüfen
+- Nach Step 8 → `PRODUCTION_CHECKLIST.md` prüfen
+
+---
+
+## Verbotene Aktionen
+
+❌ Pflicht-Dateien löschen
+❌ Contracts still ändern
+❌ Code ohne Tests
+❌ Production ohne Checklist
+❌ Merge ohne Review
+❌ Force Push zu main/develop

@@ -1,83 +1,77 @@
 # Claude CLI Regeln für dieses Projekt
 
-> Diese Regeln gelten für Claude Code CLI und alle AI Agents die in diesem Repo arbeiten.
+---
+
+## PFLICHT BEI SESSION-START
+
+**STOPP! Bevor du IRGENDETWAS tust, lies diese Dateien:**
+
+```bash
+cat ops/POLICY.md
+cat MASTER_RUNBOOK.md
+cat capabilities.yml
+cat PRODUCTION_CHECKLIST.md
+cat CONTRACTS/api_contract.md
+cat CONTRACTS/data_contract.md
+```
+
+**Erst nach dem Lesen darfst du arbeiten!**
 
 ---
 
-## PFLICHT: Template Compliance
+## Warum?
 
-Dieses Projekt basiert auf dem **Activi-AI Template**. Folgende Regeln sind PFLICHT:
-
-### 1. Pflicht-Dateien NIEMALS löschen
-
-Diese Dateien dürfen NICHT gelöscht oder umbenannt werden:
-- `README.md`
-- `PROJECT_STATE.md`
-- `MASTER_RUNBOOK.md`
-- `PRODUCTION_CHECKLIST.md`
-- `capabilities.yml`
-- `CONTRACTS/api_contract.md`
-- `CONTRACTS/data_contract.md`
-- `ops/POLICY.md`
-
-### 2. Contracts-First
-
-**VOR jeder Backend-Änderung:**
-1. Lies `CONTRACTS/api_contract.md`
-2. Lies `CONTRACTS/data_contract.md`
-3. Änderungen an API/DB → ZUERST Contract aktualisieren
-4. DANN erst Code ändern
-
-### 3. Single Source of Truth
-
-`PROJECT_STATE.md` ist die **einzige Wahrheit** über den Projekt-Status.
-- Bei Statusänderungen → `PROJECT_STATE.md` aktualisieren
-- Bei Unklarheiten → `PROJECT_STATE.md` lesen
-
-### 4. Capabilities mit Tests
-
-Jede neue Funktion MUSS:
-1. In `capabilities.yml` registriert werden
-2. Tests haben (gemäß `capabilities.yml` Test-Regeln)
-3. Keine Funktion ohne Test!
-
-### 5. Production Checklist
-
-**VOR Go-Live:**
-- Lies `PRODUCTION_CHECKLIST.md`
-- Alle Punkte MÜSSEN abgehakt sein
-- Keine Ausnahmen
+| Datei | Enthält |
+|-------|---------|
+| `ops/POLICY.md` | Merge-Regeln, Branch-Namen, Push-Rules, Versioning |
+| `MASTER_RUNBOOK.md` | Step 0-10 Workflow, STOPP-Punkte |
+| `capabilities.yml` | Test-Pflichten pro Feature |
+| `PRODUCTION_CHECKLIST.md` | Alle Go-Live Checks |
+| `CONTRACTS/*.md` | API + DB Definitionen |
 
 ---
 
-## Workflow
+## Kurzregeln (Details in den Dateien)
 
-1. **Neues Feature:**
-   - Lies `MASTER_RUNBOOK.md` für Steps
-   - Folge dem 3-Stufen Workflow in `PROMPTS/`
+### Contracts-First
+- API/DB Änderung → ZUERST Contract aktualisieren → DANN Code
 
-2. **Bug Fix:**
-   - Prüfe ob Contract betroffen
-   - Update `capabilities.yml` wenn neue Tests nötig
+### Branch-Namen
+- Features: `feature/beschreibung`
+- Fixes: `fix/beschreibung`
+- Hotfixes: `hotfix/beschreibung`
 
-3. **Vor Commit:**
-   - `./scripts/check_template_compliance.sh` ausführen
-   - Tests ausführen
+### Merge-Strategie
+- feature → develop: **Squash**
+- develop → main: **Merge Commit**
+
+### Tests
+- Jede Funktion → in `capabilities.yml` registrieren
+- Keine Funktion ohne Test
+
+### STOPP-Punkte
+- Nach Step 7 → `docs/CONTRACT_VERIFICATION.md` prüfen
+- Nach Step 8 → `PRODUCTION_CHECKLIST.md` prüfen
 
 ---
 
 ## Verbotene Aktionen
 
 ❌ Pflicht-Dateien löschen
-❌ Contracts still ändern (ohne Dokumentation)
+❌ Contracts still ändern
 ❌ Code ohne Tests
-❌ Production-Deploy ohne Checklist
-❌ `PROJECT_STATE.md` ignorieren
+❌ Production ohne Checklist
+❌ Merge ohne Review
+❌ Force Push zu main/develop
 
 ---
 
-## Bei Fragen
+## Workflow
 
-1. Lies `ops/OPEN_QUESTIONS.md`
-2. Dokumentiere neue Fragen dort
-3. Lies `ops/DECISIONS.md` für Architektur-Entscheidungen
+```
+PROMPTS/INTAKE_PROMPT.md → MASTER_PROMPT_1.md → MASTER_PROMPT_2.md
+         ↓                        ↓                    ↓
+    Anfrage verstehen        Ziel-Plan            Step-by-Step
+```
+
+Bei Unklarheiten: `ops/OPEN_QUESTIONS.md` dokumentieren.
